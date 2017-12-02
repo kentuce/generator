@@ -34,6 +34,7 @@ import org.mybatis.generator.exception.InvalidConfigurationException;
  */
 public class Configuration {
 
+    // L: 相当于每个数据库一个Context, 里面包含数据库的连接信息
     /** The contexts. */
     private List<Context> contexts;
 

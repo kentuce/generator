@@ -1,17 +1,12 @@
 /**
- *    Copyright 2006-2017 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2006-2017 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under the License.
  */
 package org.mybatis.generator.internal;
 
@@ -46,7 +41,7 @@ import org.xml.sax.SAXException;
 
 /**
  * This class handles the task of merging changes into an existing XML file.
- * 
+ *
  * @author Jeff Butler
  */
 public class XmlFileMergerJaxp {
@@ -58,7 +53,7 @@ public class XmlFileMergerJaxp {
          */
         @Override
         public InputSource resolveEntity(String publicId, String systemId)
-                throws SAXException, IOException {
+            throws SAXException, IOException {
 
             StringReader sr = new StringReader(""); //$NON-NLS-1$
 
@@ -73,8 +68,7 @@ public class XmlFileMergerJaxp {
         super();
     }
 
-    public static String getMergedSource(GeneratedXmlFile generatedXmlFile,
-            File existingFile) throws ShellException {
+    public static String getMergedSource(GeneratedXmlFile generatedXmlFile, File existingFile) throws ShellException {
 
         try {
             return getMergedSource(new InputSource(new StringReader(generatedXmlFile.getFormattedContent())),
@@ -82,22 +76,22 @@ public class XmlFileMergerJaxp {
                 existingFile.getName());
         } catch (IOException e) {
             throw new ShellException(getString("Warning.13", //$NON-NLS-1$
-                    existingFile.getName()), e);
+                existingFile.getName()), e);
         } catch (SAXException e) {
             throw new ShellException(getString("Warning.13", //$NON-NLS-1$
-                    existingFile.getName()), e);
+                existingFile.getName()), e);
         } catch (ParserConfigurationException e) {
             throw new ShellException(getString("Warning.13", //$NON-NLS-1$
-                    existingFile.getName()), e);
+                existingFile.getName()), e);
         }
     }
-    
+
     public static String getMergedSource(InputSource newFile,
-            InputSource existingFile, String existingFileName) throws IOException, SAXException,
-            ParserConfigurationException, ShellException {
+                                         InputSource existingFile, String existingFileName) throws IOException, SAXException,
+        ParserConfigurationException, ShellException {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory
-                .newInstance();
+            .newInstance();
         factory.setExpandEntityReferences(false);
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver(new NullEntityResolver());
@@ -110,7 +104,7 @@ public class XmlFileMergerJaxp {
 
         if (!newDocType.getName().equals(existingDocType.getName())) {
             throw new ShellException(getString("Warning.12", //$NON-NLS-1$
-                    existingFileName));
+                existingFileName));
         }
 
         Element existingRootElement = existingDocument.getDocumentElement();
@@ -134,7 +128,7 @@ public class XmlFileMergerJaxp {
         for (int i = 0; i < attributeCount; i++) {
             Node node = attributes.item(i);
             existingRootElement.setAttribute(node.getNodeName(), node
-                    .getNodeValue());
+                .getNodeValue());
         }
 
         // remove the old generated elements and any
@@ -147,7 +141,7 @@ public class XmlFileMergerJaxp {
             if (isGeneratedNode(node)) {
                 nodesToDelete.add(node);
             } else if (isWhiteSpace(node)
-                    && isGeneratedNode(children.item(i + 1))) {
+                && isGeneratedNode(children.item(i + 1))) {
                 nodesToDelete.add(node);
             }
         }
@@ -189,7 +183,7 @@ public class XmlFileMergerJaxp {
         boolean rc = false;
 
         if (node != null && node.getNodeType() == Node.ELEMENT_NODE) {
-            Element element = (Element) node;
+            Element element = (Element)node;
             String id = element.getAttribute("id"); //$NON-NLS-1$
             if (id != null) {
                 for (String prefix : MergeConstants.OLD_XML_ELEMENT_PREFIXES) {
@@ -212,7 +206,7 @@ public class XmlFileMergerJaxp {
                     if (isWhiteSpace(childNode)) {
                         continue;
                     } else if (childNode.getNodeType() == Node.COMMENT_NODE) {
-                        Comment comment = (Comment) childNode;
+                        Comment comment = (Comment)childNode;
                         String commentData = comment.getData();
                         for (String tag : MergeConstants.OLD_ELEMENT_TAGS) {
                             if (commentData.contains(tag)) {
@@ -234,7 +228,7 @@ public class XmlFileMergerJaxp {
         boolean rc = false;
 
         if (node != null && node.getNodeType() == Node.TEXT_NODE) {
-            Text tn = (Text) node;
+            Text tn = (Text)node;
             if (tn.getData().trim().length() == 0) {
                 rc = true;
             }
